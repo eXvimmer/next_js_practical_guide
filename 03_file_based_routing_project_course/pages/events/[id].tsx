@@ -1,12 +1,30 @@
+import EventContent from "@/components/event-detail/EventContent";
+import EventLogistics from "@/components/event-detail/EventLogistics";
+import EventSummary from "@/components/event-detail/EventSummary";
+import { getEventById } from "@/dummy_data";
 import { useRouter } from "next/router";
 
 export default function EventDetailPage() {
   const router = useRouter();
-  const id = router.query.id;
+  const { id } = router.query;
+  const event = getEventById(Array.isArray(id) ? id[0] : id!);
+
+  if (!event) {
+    return <p>Event Not Found</p>;
+  }
 
   return (
-    <div>
-      <h1>Event Item #{Array.isArray(id) ? id[0] : id}</h1>
-    </div>
+    <>
+      <EventSummary title={event.title} />
+      <EventLogistics
+        date={event.date}
+        address={event.location}
+        image={event.image}
+        imageAlt={event.title}
+      />
+      <EventContent content={""}>
+        <p>{event.description}</p>
+      </EventContent>
+    </>
   );
 }
