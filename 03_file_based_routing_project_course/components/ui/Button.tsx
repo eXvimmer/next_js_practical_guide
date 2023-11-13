@@ -1,17 +1,35 @@
 import Link from "next/link";
 import styles from "./button.module.css";
 
-function Button({
-  children,
-  link,
-}: {
+interface ButtonProps {
   children: React.ReactNode;
+}
+
+type FormButton = {
+  type: "form";
+  handleClick: () => void;
+};
+
+type LinkButton = {
+  type: "link";
   link: string;
-}) {
+};
+
+type ButtonVariant = FormButton | LinkButton;
+
+function Button({ children, ...props }: ButtonProps & ButtonVariant) {
+  if (props.type === "link") {
+    return (
+      <Link href={props.link} className={styles.btn}>
+        {children}
+      </Link>
+    );
+  }
+
   return (
-    <Link href={link} className={styles.btn}>
+    <button className={styles.btn} onClick={props.handleClick}>
       {children}
-    </Link>
+    </button>
   );
 }
 
