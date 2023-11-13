@@ -9,7 +9,6 @@ export default function FilteredEventsPage() {
       <h1>Event slug</h1>
       <ul>
         {Array.isArray(slug) ? slug.map((s) => <li key={s}>{s}</li>) : slug}
-        {/* {slug} */}
       </ul>
     </div>
   );

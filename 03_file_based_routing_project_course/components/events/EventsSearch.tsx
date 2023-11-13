@@ -1,20 +1,38 @@
+import { useRef } from "react";
 import Button from "../ui/Button";
 import styles from "./events-search.module.css";
 
-function EventsSearch() {
+interface EventSearchProps {
+  onSearch(year: string, month: string): void;
+}
+
+function EventsSearch({ onSearch }: EventSearchProps) {
+  const yearRef = useRef<HTMLSelectElement>(null);
+  const monthRef = useRef<HTMLSelectElement>(null);
+
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    const selectedYear = yearRef?.current?.value;
+    const selectedMonth = monthRef?.current?.value;
+    if (!selectedYear || !selectedMonth) {
+      return;
+    }
+    onSearch(selectedYear, selectedMonth);
+  };
+
   return (
-    <form className={styles.form}>
+    <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.controls}>
         <div className={styles.control}>
           <label htmlFor="year">Year</label>
-          <select id="year">
+          <select id="year" ref={yearRef}>
             <option value="2021">2021</option>
             <option value="2022">2022</option>
           </select>
         </div>
         <div className={styles.control}>
           <label htmlFor="month">Month</label>
-          <select id="month">
+          <select id="month" ref={monthRef}>
             <option value="1">January</option>
             <option value="2">February</option>
             <option value="3">March</option>
@@ -30,14 +48,7 @@ function EventsSearch() {
           </select>
         </div>
       </div>
-      <Button
-        type="form"
-        handleClick={() => {
-          throw new Error("TODO: implement this");
-        }}
-      >
-        Find Events
-      </Button>
+      <Button>Find Events</Button>
     </form>
   );
 }
