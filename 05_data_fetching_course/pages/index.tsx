@@ -29,5 +29,6 @@ export const getStaticProps = (async (/* context */) => {
     props: {
       products: data.products,
     },
+    revalidate: 10, // amount in seconds after which a page-regeneration can occur
   };
 }) satisfies GetStaticProps;
