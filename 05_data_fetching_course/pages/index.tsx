@@ -1,8 +1,6 @@
 import { GetStaticProps, InferGetStaticPropsType } from "next";
-import path from "path";
-import fs from "fs/promises";
-import { Product } from "@/types";
 import Link from "next/link";
+import { getData } from "@/lib/products";
 
 export default function Home({
   products,
@@ -19,10 +17,7 @@ export default function Home({
 }
 
 export const getStaticProps = (async (/* context */) => {
-  const filePath = path.join(process.cwd(), "data", "dummy-backend.json");
-  const content = await fs.readFile(filePath, { encoding: "utf8" });
-  const data: { products: Product[] } = JSON.parse(content);
-
+  const data = await getData();
   return {
     props: {
       products: data.products,
