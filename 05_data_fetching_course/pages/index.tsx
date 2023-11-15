@@ -1,4 +1,12 @@
 import { GetStaticProps, InferGetStaticPropsType } from "next";
+import path from "path";
+import fs from "fs/promises";
+
+interface Product {
+  id: string;
+  title: string;
+  description: string;
+}
 
 export default function Home({
   products,
@@ -13,13 +21,13 @@ export default function Home({
 }
 
 export const getStaticProps = (async (/* context */) => {
+  const filePath = path.join(process.cwd(), "data", "dummy-backend.json");
+  const content = await fs.readFile(filePath, { encoding: "utf8" });
+  const data: { products: Product[] } = JSON.parse(content);
+
   return {
     props: {
-      products: [
-        { id: 1, title: "Product 1" },
-        { id: 2, title: "Product 2" },
-        { id: 3, title: "Product 3" },
-      ],
+      products: data.products,
     },
   };
 }) satisfies GetStaticProps;
