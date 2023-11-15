@@ -6,6 +6,9 @@ import { Product } from "@/types";
 export default function ProductDetailPage({
   product,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
+  // if (!product) {
+  //   return <p>Loading...</p>;
+  // }
   return (
     <>
       <h1>{product.title}</h1>
@@ -18,10 +21,11 @@ export const getStaticPaths = (async () => {
   return {
     paths: [
       { params: { pid: "p1" } },
-      { params: { pid: "p2" } },
-      { params: { pid: "p3" } },
+      // { params: { pid: "p2" } },
+      // { params: { pid: "p3" } },
     ],
-    fallback: false,
+    // fallback: true,
+    fallback: "blocking",
   };
 }) satisfies GetStaticPaths;
 
