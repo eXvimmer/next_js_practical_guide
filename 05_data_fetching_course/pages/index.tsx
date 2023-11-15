@@ -1,12 +1,8 @@
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import path from "path";
 import fs from "fs/promises";
-
-interface Product {
-  id: string;
-  title: string;
-  description: string;
-}
+import { Product } from "@/types";
+import Link from "next/link";
 
 export default function Home({
   products,
@@ -14,7 +10,9 @@ export default function Home({
   return (
     <ul>
       {products.map((p) => (
-        <li key={p.id}>{p.title}</li>
+        <Link href={p.id} key={p.id}>
+          <li>{p.title}</li>
+        </Link>
       ))}
     </ul>
   );
