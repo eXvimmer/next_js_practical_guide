@@ -8,7 +8,7 @@ export default function Home({
   return (
     <ul>
       {products.map((p) => (
-        <Link href={p.id} key={p.id}>
+        <Link href={`/products/p.id`} key={p.id}>
           <li>{p.title}</li>
         </Link>
       ))}
