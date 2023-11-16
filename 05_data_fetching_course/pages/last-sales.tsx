@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import useSWR from "swr";
+
 interface Sale {
   id: string;
   username: string;
@@ -7,36 +9,32 @@ interface Sale {
 
 export default function LastSalesPage() {
   const [sales, setSales] = useState<Sale[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    setIsLoading(true);
-    fetch(
-      `https://nextjs-course-9288e-default-rtdb.asia-southeast1.firebasedatabase.app/sales.json`,
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        const transformedData: Sale[] = [];
-        for (const key in data) {
-          transformedData.push({
-            id: key,
-            username: data[key].username,
-            volume: data[key].volume,
-          });
-        }
-        setSales(transformedData);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
+  const { data, error, isLoading } = useSWR(
+    `https://nextjs-course-9288e-default-rtdb.asia-southeast1.firebasedatabase.app/sales.json`,
+    (url: string) =>
+      fetch(url)
+        .then((res) => res.json())
+        .then((data) => {
+          const transformedData: Sale[] = [];
+          for (const key in data) {
+            transformedData.push({
+              id: key,
+              username: data[key].username,
+              volume: data[key].volume,
+            });
+          }
+          setSales(transformedData);
+          return data;
+        }),
+  );
 
-  if (isLoading) {
-    return <p>Loading...</p>;
+  if (error) {
+    return <p>failed to load the data</p>;
   }
 
-  if (!sales.length) {
-    return <p>Sales data is not avaialable yet</p>;
+  if (isLoading || !data || !sales.length) {
+    return <p>Loading...</p>;
   }
 
   return (
