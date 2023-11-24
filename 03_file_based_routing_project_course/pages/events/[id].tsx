@@ -1,21 +1,12 @@
 import EventContent from "@/components/event-detail/EventContent";
 import EventLogistics from "@/components/event-detail/EventLogistics";
 import EventSummary from "@/components/event-detail/EventSummary";
-import ErrorAlert from "@/components/ui/ErrorAlert";
 import supabase from "@/services/supabase";
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 
 export default function EventDetailPage(
   props: InferGetStaticPropsType<typeof getStaticProps>,
 ) {
-  if (!props.event) {
-    return (
-      <ErrorAlert>
-        <p>Event Not Found</p>
-      </ErrorAlert>
-    );
-  }
-
   return (
     <>
       <EventSummary title={props.event.title} />
