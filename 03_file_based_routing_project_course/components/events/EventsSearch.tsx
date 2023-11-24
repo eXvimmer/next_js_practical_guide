@@ -6,7 +6,7 @@ interface EventSearchProps {
   onSearch(year: string, month: string): void;
 }
 
-function EventsSearch({ onSearch }: EventSearchProps) {
+function EventsSearch(props: EventSearchProps) {
   const yearRef = useRef<HTMLSelectElement>(null);
   const monthRef = useRef<HTMLSelectElement>(null);
 
@@ -17,7 +17,7 @@ function EventsSearch({ onSearch }: EventSearchProps) {
     if (!selectedYear || !selectedMonth) {
       return;
     }
-    onSearch(selectedYear, selectedMonth);
+    props.onSearch(selectedYear, selectedMonth);
   };
 
   return (
@@ -28,6 +28,9 @@ function EventsSearch({ onSearch }: EventSearchProps) {
           <select id="year" ref={yearRef}>
             <option value="2021">2021</option>
             <option value="2022">2022</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+            <option value="2025">2025</option>
           </select>
         </div>
         <div className={styles.control}>

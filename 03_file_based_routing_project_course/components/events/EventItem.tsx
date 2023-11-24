@@ -10,15 +10,19 @@ interface EventItemProps {
 }
 
 function EventItem({ event }: EventItemProps) {
-  const readableDate = new Date(event.date).toLocaleDateString("en-US", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-  const address = event.location.replace(", ", "\n");
+  const readableDate = new Date(event.date || new Date()).toLocaleDateString(
+    "en-US",
+    {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    },
+  );
+  const address = event?.location?.replace(", ", "\n");
 
   return (
     <li className={styles.item}>
+      {/* TODO: convert the image  */}
       <img src={"/" + event.image} alt={event.title} />
       <div className={styles.content}>
         <div className={styles.summary}>

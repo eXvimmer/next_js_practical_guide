@@ -1,12 +1,30 @@
 import EventList from "@/components/events/EventList";
-import { getFeaturedEvents } from "@/dummy_data";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
+import supabase from "@/services/supabase";
+import { Event } from "@/types";
 
-export default function Home() {
-  const featuredEvents = getFeaturedEvents();
-
+export default function Home(
+  props: InferGetStaticPropsType<typeof getStaticProps>,
+) {
   return (
     <div>
-      <EventList items={featuredEvents} />
+      <EventList items={props.events} />
     </div>
   );
 }
+
+export const getStaticProps = (async (/* context */) => {
+  const { data, error } = await supabase.from("events").select("*");
+  if (error) {
+    return {
+      props: {
+        events: [] as Event[],
+      },
+    };
+  }
+  return {
+    props: {
+      events: data.filter((e) => e.isFeatured),
+    },
+  };
+}) satisfies GetStaticProps;
