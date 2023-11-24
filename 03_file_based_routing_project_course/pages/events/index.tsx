@@ -23,17 +23,19 @@ export default function Events(
 }
 
 export const getStaticProps = (async () => {
-  const { data, error } = await supabase.from("events").select("*");
-  if (error) {
+  const { data, error } = await supabase
+    .from("events")
+    .select("*")
+    .eq("isFeatured", true);
+  if (error || !data) {
     return {
-      props: {
-        events: [],
-      },
+      notFound: true,
     };
   }
   return {
     props: {
       events: data,
     },
+    revalidate: 5 * 60, // every 5 minutes
   };
 }) satisfies GetStaticProps;

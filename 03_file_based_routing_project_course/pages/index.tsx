@@ -26,5 +26,6 @@ export const getStaticProps = (async (/* context */) => {
     props: {
       events: data.filter((e) => e.isFeatured),
     },
+    revalidate: 30 * 60, // every 30 minutes
   };
 }) satisfies GetStaticProps;

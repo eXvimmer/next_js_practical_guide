@@ -34,15 +34,15 @@ export default function EventDetailPage(
 
 export const getStaticPaths = (async () => {
   const { data, error } = await supabase.from("events").select("id");
-  if (error) {
+  if (error || !data) {
     return {
       paths: [],
-      fallback: false,
+      fallback: "blocking",
     };
   }
   return {
     paths: data.map((o) => ({ params: { id: o.id } })),
-    fallback: false,
+    fallback: "blocking",
   };
 }) satisfies GetStaticPaths;
 
@@ -52,9 +52,7 @@ export const getStaticProps = (async (context) => {
     : context.params?.id;
   if (!id) {
     return {
-      props: {
-        event: null,
-      },
+      notFound: true,
     };
   }
   const { data, error } = await supabase
@@ -62,11 +60,9 @@ export const getStaticProps = (async (context) => {
     .select("*")
     .eq("id", id)
     .single();
-  if (error) {
+  if (error || !data) {
     return {
-      props: {
-        event: null,
-      },
+      notFound: true,
     };
   }
   return {
