@@ -14,7 +14,10 @@ export default function Home(
 }
 
 export const getStaticProps = (async (/* context */) => {
-  const { data, error } = await supabase.from("events").select("*");
+  const { data, error } = await supabase
+    .from("events")
+    .select("*")
+    .eq("isFeatured", true);
   if (error) {
     return {
       props: {
@@ -24,7 +27,7 @@ export const getStaticProps = (async (/* context */) => {
   }
   return {
     props: {
-      events: data.filter((e) => e.isFeatured),
+      events: data,
     },
     revalidate: 30 * 60, // every 30 minutes
   };

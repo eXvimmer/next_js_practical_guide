@@ -23,10 +23,7 @@ export default function Events(
 }
 
 export const getStaticProps = (async () => {
-  const { data, error } = await supabase
-    .from("events")
-    .select("*")
-    .eq("isFeatured", true);
+  const { data, error } = await supabase.from("events").select("*");
   if (error || !data) {
     return {
       notFound: true,
