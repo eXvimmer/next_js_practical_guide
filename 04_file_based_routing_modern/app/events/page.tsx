@@ -1,22 +1,19 @@
-"use client";
-
 import EventList from "@/components/events/EventList";
 import EventsSearch from "@/components/events/EventsSearch";
-import { getAllEvents } from "@/dummy_data";
-import { useRouter } from "next/navigation";
+import ErrorAlert from "@/components/ui/ErrorAlert";
+import supabase from "@/services/supabase";
 
-export default function Events() {
-  const router = useRouter();
-  const events = getAllEvents();
+export const revalidate = 1800;
 
-  const handleSearch = (year: string, month: string) => {
-    const fullPath = `/events/${year}/${month}`;
-    router.push(fullPath);
-  };
+export default async function Events() {
+  const { data: events, error } = await supabase.from("events").select();
+  if (error) {
+    return <ErrorAlert>{error.message}</ErrorAlert>;
+  }
 
   return (
     <>
-      <EventsSearch onSearch={handleSearch} />
+      <EventsSearch />
       <EventList items={events} />
     </>
   );

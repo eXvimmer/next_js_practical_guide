@@ -1,38 +1,31 @@
-import { useRef } from "react";
+import { redirect } from "next/navigation";
 import Button from "../ui/Button";
 import styles from "./events-search.module.css";
 
-interface EventSearchProps {
-  onSearch(year: string, month: string): void;
+async function action(formData: FormData) {
+  "use server";
+  const year = formData.get("year");
+  const month = formData.get("month");
+  redirect(`/events/${year}/${month}`);
 }
 
-function EventsSearch({ onSearch }: EventSearchProps) {
-  const yearRef = useRef<HTMLSelectElement>(null);
-  const monthRef = useRef<HTMLSelectElement>(null);
-
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-    const selectedYear = yearRef?.current?.value;
-    const selectedMonth = monthRef?.current?.value;
-    if (!selectedYear || !selectedMonth) {
-      return;
-    }
-    onSearch(selectedYear, selectedMonth);
-  };
-
+function EventsSearch() {
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <form className={styles.form} action={action}>
       <div className={styles.controls}>
         <div className={styles.control}>
           <label htmlFor="year">Year</label>
-          <select id="year" ref={yearRef}>
+          <select id="year" name="year">
             <option value="2021">2021</option>
             <option value="2022">2022</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+            <option value="2025">2025</option>
           </select>
         </div>
         <div className={styles.control}>
           <label htmlFor="month">Month</label>
-          <select id="month" ref={monthRef}>
+          <select id="month" name="month">
             <option value="1">January</option>
             <option value="2">February</option>
             <option value="3">March</option>

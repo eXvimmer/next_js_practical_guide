@@ -10,12 +10,15 @@ interface EventItemProps {
 }
 
 function EventItem({ event }: EventItemProps) {
-  const readableDate = new Date(event.date).toLocaleDateString("en-US", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-  const address = event.location.replace(", ", "\n");
+  const readableDate = new Date(event.date ?? Date.now()).toLocaleDateString(
+    "en-US",
+    {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    },
+  );
+  const address = event.location?.replace(", ", "\n");
 
   return (
     <li className={styles.item}>

@@ -2,19 +2,17 @@ import EventList from "@/components/events/EventList";
 import ResultsTitle from "@/components/events/ResultsTitle";
 import Button from "@/components/ui/Button";
 import ErrorAlert from "@/components/ui/ErrorAlert";
-import { getFilteredEvents } from "@/dummy_data";
+import supabase from "@/services/supabase";
 
-export default function FilteredEventsPage({
+export default async function FilteredEventsPage({
   params: { slug },
 }: {
   params: { slug: string[] };
 }) {
-  if (!slug) {
-    return <p className="center">Loading...</p>;
-  }
   const [year, month] = slug;
   const numYear = +year;
   const numMonth = +month;
+
   if (isNaN(numYear) || isNaN(numMonth) || numMonth < 1 || numMonth > 12) {
     return (
       <>
@@ -27,8 +25,17 @@ export default function FilteredEventsPage({
       </>
     );
   }
-  const filteredEvents = getFilteredEvents({ year: numYear, month: numMonth });
-  if (!filteredEvents.length) {
+  const startDate = new Date(numYear, numMonth - 1, 1);
+  const endDate = new Date(numYear, numMonth, 0);
+  const startDateString = startDate.toISOString().split("T")[0];
+  const endDateString = endDate.toISOString().split("T")[0];
+  const { data, error } = await supabase
+    .from("events")
+    .select()
+    .gte("date", startDateString)
+    .lte("date", endDateString);
+
+  if (error || !data) {
     return (
       <>
         <ErrorAlert>
@@ -41,12 +48,10 @@ export default function FilteredEventsPage({
     );
   }
 
-  const date = new Date(numYear, numMonth - 1);
-
   return (
     <>
-      <ResultsTitle date={date} />
-      <EventList items={filteredEvents} />
+      <ResultsTitle date={new Date(numYear, numMonth - 1)} />
+      <EventList items={data} />
     </>
   );
 }

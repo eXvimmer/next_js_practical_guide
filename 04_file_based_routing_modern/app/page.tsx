@@ -1,12 +1,22 @@
 import EventList from "@/components/events/EventList";
-import { getFeaturedEvents } from "@/dummy_data";
+import ErrorAlert from "@/components/ui/ErrorAlert";
+import supabase from "@/services/supabase";
 
-export default function Home() {
-  const featuredEvents = getFeaturedEvents();
+export const revalidate = 1800; // every 30 minutes
+
+export default async function Home() {
+  const { data, error } = await supabase
+    .from("events")
+    .select()
+    .eq("isFeatured", true);
+
+  if (error) {
+    return <ErrorAlert>{error.message}</ErrorAlert>;
+  }
 
   return (
     <div>
-      <EventList items={featuredEvents} />
+      <EventList items={data} />
     </div>
   );
 }

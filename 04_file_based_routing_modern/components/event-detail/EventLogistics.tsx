@@ -21,6 +21,7 @@ function EventLogistics(props: {
   return (
     <section className={classes.logistics}>
       <div className={classes.image}>
+        {/* TODO: convert to next image  */}
         <img src={`/${image}`} alt={imageAlt} />
       </div>
       <ul className={classes.list}>
