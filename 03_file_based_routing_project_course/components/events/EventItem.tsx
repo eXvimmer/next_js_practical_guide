@@ -4,6 +4,7 @@ import Button from "../ui/Button";
 import DateIcon from "../icons/DateIcon";
 import AddressIcon from "../icons/AddressIcon";
 import ArrowRightIcon from "../icons/ArrowRightIcon";
+import Image from "next/image";
 
 interface EventItemProps {
   event: Event;
@@ -22,8 +23,12 @@ function EventItem({ event }: EventItemProps) {
 
   return (
     <li className={styles.item}>
-      {/* TODO: convert the image  */}
-      <img src={"/" + event.image} alt={event.title} />
+      <Image
+        src={"/" + event.image}
+        alt={event.title}
+        width={250}
+        height={160}
+      />
       <div className={styles.content}>
         <div className={styles.summary}>
           <h2>{event.title}</h2>
