@@ -2,12 +2,20 @@ import EventList from "@/components/events/EventList";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import supabase from "@/services/supabase";
 import { Event } from "@/types";
+import Head from "next/head";
 
 export default function Home(
   props: InferGetStaticPropsType<typeof getStaticProps>,
 ) {
   return (
     <div>
+      <Head>
+        <title>Home | NextEvents</title>
+        <meta
+          name="description"
+          content="find related events to improve your life as a developer"
+        />
+      </Head>
       <EventList items={props.events} />
     </div>
   );

@@ -2,6 +2,7 @@ import EventList from "@/components/events/EventList";
 import EventsSearch from "@/components/events/EventsSearch";
 import supabase from "@/services/supabase";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
+import Head from "next/head";
 import { useRouter } from "next/router";
 
 export default function Events(
@@ -16,6 +17,13 @@ export default function Events(
 
   return (
     <>
+      <Head>
+        <title>All Events | NextEvents</title>
+        <meta
+          name="description"
+          content="find related events to improve your life as a developer"
+        />
+      </Head>
       <EventsSearch onSearch={handleSearch} />
       <EventList items={props.events} />
     </>

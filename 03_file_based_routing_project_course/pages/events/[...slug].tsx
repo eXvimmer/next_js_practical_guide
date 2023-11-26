@@ -4,6 +4,7 @@ import Button from "@/components/ui/Button";
 import ErrorAlert from "@/components/ui/ErrorAlert";
 import supabase from "@/services/supabase";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import Head from "next/head";
 
 export default function FilteredEventsPage(
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
@@ -11,6 +12,13 @@ export default function FilteredEventsPage(
   if (props.error || !props.date) {
     return (
       <>
+        <Head>
+          <title>Filtered Events | NextEvents</title>
+          <meta
+            name="description"
+            content={`All events for ${props.date?.month}/${props.date?.year}`}
+          />
+        </Head>
         <ErrorAlert>
           <p style={{ textTransform: "capitalize" }}>{props.error}</p>
         </ErrorAlert>

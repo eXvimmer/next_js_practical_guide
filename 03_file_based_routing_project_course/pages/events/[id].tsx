@@ -3,12 +3,20 @@ import EventLogistics from "@/components/event-detail/EventLogistics";
 import EventSummary from "@/components/event-detail/EventSummary";
 import supabase from "@/services/supabase";
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
+import Head from "next/head";
 
 export default function EventDetailPage(
   props: InferGetStaticPropsType<typeof getStaticProps>,
 ) {
   return (
     <>
+      <Head>
+        <title>{props.event.title} | NextEvents</title>
+        <meta
+          name="description"
+          content={props.event.description || "event details"}
+        />
+      </Head>
       <EventSummary title={props.event.title} />
       <EventLogistics
         date={props.event.date || ""}
