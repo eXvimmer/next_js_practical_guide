@@ -12,13 +12,6 @@ export default function FilteredEventsPage(
   if (props.error || !props.date) {
     return (
       <>
-        <Head>
-          <title>Filtered Events | NextEvents</title>
-          <meta
-            name="description"
-            content={`All events for ${props.date?.month}/${props.date?.year}`}
-          />
-        </Head>
         <ErrorAlert>
           <p style={{ textTransform: "capitalize" }}>{props.error}</p>
         </ErrorAlert>
@@ -44,6 +37,13 @@ export default function FilteredEventsPage(
 
   return (
     <>
+      <Head>
+        <title>Filtered Events | NextEvents</title>
+        <meta
+          name="description"
+          content={`All events for ${props.date?.month}/${props.date?.year}`}
+        />
+      </Head>
       <ResultsTitle
         date={new Date(props?.date?.year, props?.date?.month - 1)}
       />
