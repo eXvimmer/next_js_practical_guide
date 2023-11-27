@@ -1,13 +1,8 @@
 import { FormEventHandler, MouseEventHandler, useRef, useState } from "react";
+import { Feedback } from "./api/feedback";
 
 export default function Home() {
-  const [feedback, setFeedback] = useState<
-    {
-      id: string;
-      email: string;
-      text: string;
-    }[]
-  >([]);
+  const [feedback, setFeedback] = useState<Feedback[]>([]);
   const emailRef = useRef<HTMLInputElement>(null);
   const feedbackRef = useRef<HTMLTextAreaElement>(null);
 
@@ -29,7 +24,7 @@ export default function Home() {
   const handleLoadFeedback: MouseEventHandler<HTMLButtonElement> = () => {
     fetch("/api/feedback")
       .then((res) => res.json())
-      .then((data) => setFeedback(data.feedback));
+      .then((data: { feedback: Feedback[] }) => setFeedback(data.feedback));
   };
 
   return (
