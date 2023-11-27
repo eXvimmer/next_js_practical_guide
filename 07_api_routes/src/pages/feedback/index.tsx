@@ -1,6 +1,6 @@
 import { GetStaticProps, InferGetStaticPropsType } from "next";
-import { Feedback, extractFeedback } from "../api/feedback";
 import { useState } from "react";
+import { Feedback, extractFeedback } from "../api/feedback";
 
 export default function FeedbackPage(
   props: InferGetStaticPropsType<typeof getStaticProps>,
@@ -9,7 +9,7 @@ export default function FeedbackPage(
 
   const handleDetailDisplay = (id: string) => {
     // NOTE: this request is redundant, we already have this data in props
-    fetch(`/api/${id}`)
+    fetch(`/api/feedback/${id}`)
       .then((res) => res.json())
       .then((data) => setFeedback(data.feedback));
   };

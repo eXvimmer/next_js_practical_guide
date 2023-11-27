@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { extractFeedback } from "./feedback";
+import { extractFeedback } from ".";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const data = extractFeedback();
