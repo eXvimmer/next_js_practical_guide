@@ -3,7 +3,11 @@ import path from "path";
 import fs from "fs";
 import crypto from "crypto";
 
+const filePath = path.join(process.cwd(), "data", "feedback.json");
+
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  const buffer = fs.readFileSync(filePath);
+  const data = JSON.parse(buffer);
   if (req.method === "POST") {
     const { email, text }: { email?: string; text?: string } = req.body;
     if (!email || !text) {
@@ -16,13 +20,10 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       email,
       text,
     };
-    const filePath = path.join(process.cwd(), "data", "feedback.json");
-    const buffer = fs.readFileSync(filePath);
-    const data = JSON.parse(buffer);
     data.push(newFeedback);
     fs.writeFileSync(filePath, JSON.stringify(data));
     return res.status(201).json({ message: "success", feedback: newFeedback });
+  } else {
+    return res.status(200).json({ feedback: data });
   }
-  res.setHeader("Allow", "POST");
-  return res.status(405).json({ message: "method not allowed" });
 }

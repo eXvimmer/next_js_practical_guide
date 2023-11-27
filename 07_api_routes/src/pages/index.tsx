@@ -1,6 +1,13 @@
-import { FormEventHandler, useRef } from "react";
+import { FormEventHandler, MouseEventHandler, useRef, useState } from "react";
 
 export default function Home() {
+  const [feedback, setFeedback] = useState<
+    {
+      id: string;
+      email: string;
+      text: string;
+    }[]
+  >([]);
   const emailRef = useRef<HTMLInputElement>(null);
   const feedbackRef = useRef<HTMLTextAreaElement>(null);
 
@@ -19,17 +26,32 @@ export default function Home() {
       .then((data) => console.log(data));
   };
 
+  const handleLoadFeedback: MouseEventHandler<HTMLButtonElement> = () => {
+    fetch("/api/feedback")
+      .then((res) => res.json())
+      .then((data) => setFeedback(data.feedback));
+  };
+
   return (
-    <form onSubmit={handleFormSubmission}>
-      <div>
-        <label htmlFor="email">Email</label>
-        <input type="email" id="email" name="email" ref={emailRef} />
-      </div>
-      <div>
-        <label htmlFor="feedback">Feedback</label>
-        <textarea rows={5} id="feedback" name="feedback" ref={feedbackRef} />
-      </div>
-      <button type="submit">Send feedback</button>
-    </form>
+    <div>
+      <form onSubmit={handleFormSubmission}>
+        <div>
+          <label htmlFor="email">Email</label>
+          <input type="email" id="email" name="email" ref={emailRef} />
+        </div>
+        <div>
+          <label htmlFor="feedback">Feedback</label>
+          <textarea rows={5} id="feedback" name="feedback" ref={feedbackRef} />
+        </div>
+        <button type="submit">Send feedback</button>
+      </form>
+      <hr />
+      <button onClick={handleLoadFeedback}>Load feedbacks</button>
+      <ul>
+        {feedback.map((item) => (
+          <li key={item.id}>{item.text}</li>
+        ))}
+      </ul>
+    </div>
   );
 }
