@@ -10,7 +10,7 @@ export default async function handler(
     case "POST": {
       const { email, text, username }: Record<string, string> = req.body;
       if (!email || !username || !text) {
-        return res.status(400).json({
+        return res.status(422).json({
           success: false,
           message: "Email, text, and username are required",
         });

@@ -10,7 +10,7 @@ export default async function handler(
       const { email }: { email?: string } = req.body;
       if (!email) {
         return res
-          .status(400)
+          .status(422)
           .json({ message: "Email is required", success: false });
       }
       const { error } = await supabase.from("newsletter").insert({ email });

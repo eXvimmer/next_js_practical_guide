@@ -1,15 +1,15 @@
-import { FormEventHandler, useState } from "react";
+import { FormEventHandler, useRef, useState } from "react";
 import styles from "./newsletter-registration.module.css";
 import Alert from "../ui/Alert";
 
 function NewsletterRegistration() {
-  const [email, setEmail] = useState("");
+  const emailInputRef = useRef<HTMLInputElement>(null);
   const [isSuccessful, setIsSuccessful] = useState(true);
   const [message, setMessage] = useState("");
 
   const registrationHandler: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    if (!email) {
+    if (!emailInputRef.current?.value) {
       setIsSuccessful(false);
       setMessage("Please provide a valid email address");
       return;
@@ -18,7 +18,7 @@ function NewsletterRegistration() {
     setMessage("");
     fetch(`/api/newsletter`, {
       method: "POST",
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ email: emailInputRef.current?.value }),
       headers: {
         "Content-Type": "application/json",
       },
@@ -31,6 +31,9 @@ function NewsletterRegistration() {
         } else {
           setIsSuccessful(true);
           setMessage(data.message);
+          if (emailInputRef.current) {
+            emailInputRef.current.value = "";
+          }
         }
       });
   };
@@ -45,8 +48,7 @@ function NewsletterRegistration() {
             id="email"
             placeholder="Your email"
             aria-label="Your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            ref={emailInputRef}
           />
           <button>Register</button>
         </div>
