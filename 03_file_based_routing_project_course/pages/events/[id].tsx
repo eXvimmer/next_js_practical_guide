@@ -1,6 +1,7 @@
 import EventContent from "@/components/event-detail/EventContent";
 import EventLogistics from "@/components/event-detail/EventLogistics";
 import EventSummary from "@/components/event-detail/EventSummary";
+import Comments from "@/components/input/comments";
 import supabase from "@/services/supabase";
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import Head from "next/head";
@@ -11,7 +12,7 @@ export default function EventDetailPage(
   return (
     <>
       <Head>
-        <title>{props.event.title} | NextEvents</title>
+        <title>{`${props.event.title} | NextEvents`}</title>
         <meta
           name="description"
           content={props.event.description || "event details"}
@@ -27,6 +28,7 @@ export default function EventDetailPage(
       <EventContent content={""}>
         <p>{props.event.description}</p>
       </EventContent>
+      <Comments eventId={props.event.id} />
     </>
   );
 }
@@ -46,27 +48,25 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 export const getStaticProps = (async (context) => {
-  const id = Array.isArray(context.params?.id)
-    ? context.params?.id[0]
-    : context.params?.id;
+  const id = context.params?.id as string;
   if (!id) {
     return {
       notFound: true,
     };
   }
-  const { data, error } = await supabase
+  const { data: event, error } = await supabase
     .from("events")
     .select("*")
     .eq("id", id)
     .single();
-  if (error || !data) {
+  if (error || !event) {
     return {
       notFound: true,
     };
   }
   return {
     props: {
-      event: data,
+      event,
     },
   };
 }) satisfies GetStaticProps;

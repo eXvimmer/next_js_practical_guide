@@ -3,6 +3,7 @@ import { GetStaticProps, InferGetStaticPropsType } from "next";
 import supabase from "@/services/supabase";
 import { Event } from "@/types";
 import Head from "next/head";
+import NewsletterRegistration from "@/components/input/newsletter-registration";
 
 export default function Home(
   props: InferGetStaticPropsType<typeof getStaticProps>,
@@ -16,6 +17,7 @@ export default function Home(
           content="find related events to improve your life as a developer"
         />
       </Head>
+      <NewsletterRegistration />
       <EventList items={props.events} />
     </div>
   );
