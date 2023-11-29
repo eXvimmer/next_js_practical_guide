@@ -1,4 +1,5 @@
 import EventList from "@/components/events/EventList";
+import NewsletterRegistration from "@/components/input/newsletter-registration";
 import ErrorAlert from "@/components/ui/ErrorAlert";
 import supabase from "@/services/supabase";
 
@@ -16,6 +17,7 @@ export default async function Home() {
 
   return (
     <div>
+      <NewsletterRegistration />
       <EventList items={data} />
     </div>
   );

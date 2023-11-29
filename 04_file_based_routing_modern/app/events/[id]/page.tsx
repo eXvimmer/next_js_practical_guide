@@ -1,6 +1,7 @@
 import EventContent from "@/components/event-detail/EventContent";
 import EventLogistics from "@/components/event-detail/EventLogistics";
 import EventSummary from "@/components/event-detail/EventSummary";
+import Comments from "@/components/input/comments";
 import Button from "@/components/ui/Button";
 import ErrorAlert from "@/components/ui/ErrorAlert";
 import supabase from "@/services/supabase";
@@ -41,6 +42,7 @@ export default async function EventDetailPage({
       <EventContent content={""}>
         <p>{event.description}</p>
       </EventContent>
+      <Comments eventId={event.id} />
     </>
   );
 }

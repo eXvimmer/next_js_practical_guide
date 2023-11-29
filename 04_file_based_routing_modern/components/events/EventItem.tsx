@@ -1,4 +1,5 @@
 import { Event } from "@/types";
+import Image from "next/image";
 import styles from "./event-item.module.css";
 import Button from "../ui/Button";
 import DateIcon from "../icons/DateIcon";
@@ -22,7 +23,12 @@ function EventItem({ event }: EventItemProps) {
 
   return (
     <li className={styles.item}>
-      <img src={"/" + event.image} alt={event.title} />
+      <Image
+        src={"/" + event.image}
+        alt={event.title}
+        width={250}
+        height={160}
+      />
       <div className={styles.content}>
         <div className={styles.summary}>
           <h2>{event.title}</h2>
