@@ -1,21 +1,27 @@
-import { FormEventHandler, useRef, useState } from "react";
+import { FormEventHandler, useContext, useRef } from "react";
 import styles from "./newsletter-registration.module.css";
-import Alert from "../ui/Alert";
+import NotificationContext from "@/store/notification-context";
 
 function NewsletterRegistration() {
   const emailInputRef = useRef<HTMLInputElement>(null);
-  const [isSuccessful, setIsSuccessful] = useState(true);
-  const [message, setMessage] = useState("");
+  const { showNotification } = useContext(NotificationContext);
 
   const registrationHandler: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
+    showNotification({
+      title: "Signing Up",
+      message: "Registering for newsletter",
+      status: "pending",
+    });
     if (!emailInputRef.current?.value) {
-      setIsSuccessful(false);
-      setMessage("Please provide a valid email address");
+      showNotification({
+        title: "Error!",
+        message: "Please provide an email address",
+        status: "error",
+      });
+
       return;
     }
-    setIsSuccessful(true);
-    setMessage("");
     fetch(`/api/newsletter`, {
       method: "POST",
       body: JSON.stringify({ email: emailInputRef.current?.value }),
@@ -23,18 +29,38 @@ function NewsletterRegistration() {
         "Content-Type": "application/json",
       },
     })
-      .then((res) => res.json())
+      .then(async (res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        const data = await res.json();
+        throw new Error(data.messsage || "Something went wrong");
+      })
       .then((data) => {
         if (!data.success) {
-          setIsSuccessful(false);
-          setMessage(data.message);
+          showNotification({
+            title: "Error!",
+            message: data.message || "Something went wrong",
+            status: "error",
+          });
         } else {
-          setIsSuccessful(true);
-          setMessage(data.message);
           if (emailInputRef.current) {
             emailInputRef.current.value = "";
           }
+          showNotification({
+            title: "Success!",
+            message:
+              data.message || "Thank you for subscribing to our newsletter!",
+            status: "success",
+          });
         }
+      })
+      .catch((error) => {
+        showNotification({
+          title: "Error!",
+          message: error.message || "Something went wrong",
+          status: "error",
+        });
       });
   };
 
@@ -53,7 +79,6 @@ function NewsletterRegistration() {
           <button>Register</button>
         </div>
       </form>
-      {message && <Alert success={isSuccessful} message={message} />}
     </section>
   );
 }
