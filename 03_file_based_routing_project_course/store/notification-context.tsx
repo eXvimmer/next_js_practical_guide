@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 import type { NotificationContextType, Notification } from "@/types";
 
 const NotificationContext = createContext<NotificationContextType>({
@@ -30,13 +30,13 @@ export function NotificationContextProvider({
     }
   }, [activeNotification]);
 
-  function showNotification(data: Notification) {
+  const showNotification = useCallback(function (data: Notification) {
     setActiveNotification(data);
-  }
+  }, []);
 
-  function hideNotification() {
+  const hideNotification = useCallback(function () {
     setActiveNotification(null);
-  }
+  }, []);
 
   return (
     <NotificationContext.Provider

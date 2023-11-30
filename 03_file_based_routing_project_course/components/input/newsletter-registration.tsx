@@ -76,7 +76,9 @@ function NewsletterRegistration() {
             aria-label="Your email"
             ref={emailInputRef}
           />
-          <button disabled={notification && notification.status === "pending"}>
+          <button
+            disabled={!!notification && notification.status === "pending"}
+          >
             Register
           </button>
         </div>
