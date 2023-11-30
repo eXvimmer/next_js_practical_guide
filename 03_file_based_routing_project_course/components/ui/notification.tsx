@@ -1,13 +1,9 @@
 // import { useContext } from "react";
 
+import { Notification } from "@/types";
 import styles from "./notification.module.css";
-// import NotificationContext from "../../store/notification-context";
 
-function Notification(props: {
-  title: string;
-  message: string;
-  status: "pending" | "success" | "error" | "";
-}) {
+function Notification(props: Notification) {
   // const notificationCtx = useContext(NotificationContext);
   const { title, message, status } = props;
 
