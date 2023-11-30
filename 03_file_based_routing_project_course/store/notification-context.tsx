@@ -3,7 +3,7 @@ import type { NotificationContextType, Notification } from "@/types";
 
 const NotificationContext = createContext<NotificationContextType>({
   notification: null,
-  showNotification(_data: Notification) {},
+  showNotification(_notification: Notification) {},
   hideNotification() {},
 });
 
@@ -30,8 +30,8 @@ export function NotificationContextProvider({
     }
   }, [activeNotification]);
 
-  const showNotification = useCallback(function (data: Notification) {
-    setActiveNotification(data);
+  const showNotification = useCallback(function (notification: Notification) {
+    setActiveNotification(notification);
   }, []);
 
   const hideNotification = useCallback(function () {

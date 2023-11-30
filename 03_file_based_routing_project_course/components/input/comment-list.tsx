@@ -31,6 +31,13 @@ function CommentList() {
               status: "error",
             });
           }
+        })
+        .catch((error) => {
+          showNotification({
+            title: "Error!",
+            message: error.message || "Something  went wrong",
+            status: "error",
+          });
         });
     }
   }, [comments.length, hideNotification, id, showNotification]);

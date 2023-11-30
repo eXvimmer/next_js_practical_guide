@@ -44,6 +44,13 @@ function Comments({ eventId }: { eventId: string }) {
           });
         }
       })
+      .catch((error) => {
+        showNotification({
+          title: "Error!",
+          message: error.message || "Something went wrong",
+          status: "error",
+        });
+      })
       .finally(() => setShowComments(true));
   }
 
