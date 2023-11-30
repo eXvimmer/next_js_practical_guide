@@ -4,7 +4,7 @@ import NotificationContext from "@/store/notification-context";
 
 function NewsletterRegistration() {
   const emailInputRef = useRef<HTMLInputElement>(null);
-  const { showNotification } = useContext(NotificationContext);
+  const { showNotification, notification } = useContext(NotificationContext);
 
   const registrationHandler: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -34,7 +34,7 @@ function NewsletterRegistration() {
           return res.json();
         }
         const data = await res.json();
-        throw new Error(data.messsage || "Something went wrong");
+        throw new Error(data.message || "Something went wrong");
       })
       .then((data) => {
         if (!data.success) {
@@ -76,7 +76,9 @@ function NewsletterRegistration() {
             aria-label="Your email"
             ref={emailInputRef}
           />
-          <button>Register</button>
+          <button disabled={notification && notification.status === "pending"}>
+            Register
+          </button>
         </div>
       </form>
     </section>
