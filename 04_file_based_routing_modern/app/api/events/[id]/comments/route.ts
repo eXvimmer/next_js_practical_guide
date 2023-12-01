@@ -1,5 +1,7 @@
 import supabase from "@/services/supabase";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(_req: Request, context: { params: { id: string } }) {
   const id = context.params.id;
   const { data: comments, error } = await supabase
