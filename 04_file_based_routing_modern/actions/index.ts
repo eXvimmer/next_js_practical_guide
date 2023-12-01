@@ -58,9 +58,8 @@ export async function createComment(
       success: false,
     };
   }
-  revalidatePath(`/events/${id}`);
   return {
-    message: "",
+    message: "Comment created",
     success: true,
   };
 }

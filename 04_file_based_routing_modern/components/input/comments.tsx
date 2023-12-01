@@ -5,7 +5,6 @@ import { useState } from "react";
 import CommentList from "./comment-list";
 import NewComment from "./new-comment";
 import styles from "./comments.module.css";
-import { Comment } from "@/types";
 
 function Comments({ eventId }: { eventId: string }) {
   const [showComments, setShowComments] = useState(false);
