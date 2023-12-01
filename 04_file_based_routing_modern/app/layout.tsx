@@ -1,5 +1,7 @@
 import "@/app/ui/global.css";
 import MainHeader from "@/components/layout/MainHeader";
+import Wrapper from "@/components/layout/Wrapper";
+import { NotificationContextProvider } from "@/store/notification-context";
 
 export const metadata = {
   title: "Next.js",
@@ -15,7 +17,11 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <MainHeader />
-        <main>{children}</main>
+        <NotificationContextProvider>
+          <Wrapper>
+            <main>{children}</main>
+          </Wrapper>
+        </NotificationContextProvider>
       </body>
     </html>
   );

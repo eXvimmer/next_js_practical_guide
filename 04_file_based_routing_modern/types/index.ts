@@ -110,3 +110,14 @@ export interface Database {
 
 export type Event = Database["public"]["Tables"]["events"]["Row"];
 export type Comment = Database["public"]["Tables"]["comments"]["Row"];
+
+export interface Notification {
+  title: string;
+  message: string;
+  status: "pending" | "success" | "error";
+}
+export interface NotificationContextType {
+  notification: null | Notification;
+  showNotification: (notification: Notification) => void;
+  hideNotification: () => void;
+}
