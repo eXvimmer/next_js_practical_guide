@@ -1,52 +1,19 @@
 import AllPosts from "@/components/posts/all-posts";
-import { Post } from "@/types";
+import { getAllPosts } from "@/lib/posts-util";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
 
-// TODO: get real posts from database
-const dummy_posts: Post[] = [
-  {
-    title: "Getting started with NextJS",
-    slug: "getting-started-with-nextjs",
-    image: "getting-started-nextjs.png",
-    excerpt: "NextJS is a React framework for production",
-    date: "2023-12-02",
-    isFeatured: true,
-  },
-  {
-    title: "Getting started with NextJS1",
-    slug: "getting-started-with-nextjs",
-    image: "getting-started-nextjs.png",
-    excerpt: "NextJS is a React framework for production",
-    date: "2023-12-02",
-    isFeatured: false,
-  },
-  {
-    title: "Getting started with NextJS2",
-    slug: "getting-started-with-nextjs",
-    image: "getting-started-nextjs.png",
-    excerpt: "NextJS is a React framework for production",
-    date: "2023-12-02",
-    isFeatured: false,
-  },
-  {
-    title: "Getting started with NextJS3",
-    slug: "getting-started-with-nextjs",
-    image: "getting-started-nextjs.png",
-    excerpt: "NextJS is a React framework for production",
-    date: "2023-12-02",
-    isFeatured: false,
-  },
-  {
-    title: "Getting started with NextJS4",
-    slug: "getting-started-with-nextjs",
-    image: "getting-started-nextjs.png",
-    excerpt: "NextJS is a React framework for production",
-    date: "2023-12-02",
-    isFeatured: false,
-  },
-];
-
-function AllPostsPage() {
-  return <AllPosts posts={dummy_posts} />;
+function AllPostsPage({
+  posts,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
+  return <AllPosts posts={posts} />;
 }
 
 export default AllPostsPage;
+
+export const getStaticProps = (async () => {
+  return {
+    props: {
+      posts: getAllPosts(),
+    },
+  };
+}) satisfies GetStaticProps;
