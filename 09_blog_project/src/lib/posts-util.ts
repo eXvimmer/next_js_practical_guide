@@ -5,12 +5,17 @@ import { PostData } from "@/types";
 
 const postsDirectory = path.join(process.cwd(), "src", "posts");
 
-function getPostData(fileName: string) {
-  const filePath = path.join(postsDirectory, fileName);
+export function getPostsFiles() {
+  return fs.readdirSync(postsDirectory);
+}
+
+export function getPostData(postIdentifier: string) {
+  const slug = postIdentifier.replace(/\.md$/, ""); // it's OK if it doesn't end with .md
+  const filePath = path.join(postsDirectory, `${slug}.md`);
   const fileContent = fs.readFileSync(filePath, "utf-8");
   const { data, content } = matter(fileContent);
   return {
-    slug: fileName.replace(/.md$/, ""),
+    slug,
     content,
     ...data,
   } as PostData;
