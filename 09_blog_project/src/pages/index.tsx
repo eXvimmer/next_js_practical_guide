@@ -10,6 +10,7 @@ const dummy_posts: Post[] = [
     image: "getting-started-nextjs.png",
     excerpt: "NextJS is a React framework for production",
     date: "2023-12-02",
+    isFeatured: true,
   },
   {
     title: "Getting started with NextJS1",
@@ -17,6 +18,7 @@ const dummy_posts: Post[] = [
     image: "getting-started-nextjs.png",
     excerpt: "NextJS is a React framework for production",
     date: "2023-12-02",
+    isFeatured: false,
   },
   {
     title: "Getting started with NextJS2",
@@ -24,6 +26,7 @@ const dummy_posts: Post[] = [
     image: "getting-started-nextjs.png",
     excerpt: "NextJS is a React framework for production",
     date: "2023-12-02",
+    isFeatured: false,
   },
   {
     title: "Getting started with NextJS3",
@@ -31,6 +34,7 @@ const dummy_posts: Post[] = [
     image: "getting-started-nextjs.png",
     excerpt: "NextJS is a React framework for production",
     date: "2023-12-02",
+    isFeatured: false,
   },
   {
     title: "Getting started with NextJS4",
@@ -38,6 +42,7 @@ const dummy_posts: Post[] = [
     image: "getting-started-nextjs.png",
     excerpt: "NextJS is a React framework for production",
     date: "2023-12-02",
+    isFeatured: false,
   },
 ];
 
