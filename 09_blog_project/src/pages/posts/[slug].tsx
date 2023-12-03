@@ -1,11 +1,20 @@
 import PostContent from "@/components/posts/post-detail/post-content";
 import { getPostData, getPostsFiles } from "@/lib/posts-util";
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
+import Head from "next/head";
 
 function PostsDetailPage({
   post,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  return <PostContent post={post} />;
+  return (
+    <>
+      <Head>
+        <title>{post.title}</title>
+        <meta name="description" content={post.excerpt} />
+      </Head>
+      <PostContent post={post} />
+    </>
+  );
 }
 
 export default PostsDetailPage;
