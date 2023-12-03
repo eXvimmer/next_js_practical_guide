@@ -1,6 +1,10 @@
+import supabase from "@/db";
 import { NextApiRequest, NextApiResponse } from "next";
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   switch (req.method) {
     case "POST":
       {
@@ -20,18 +24,31 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
           });
           return;
         }
-        // TODO: store data in database
         const newMessage = { email, name, message };
-        console.log(newMessage);
-        res.status(201).json({
-          success: true,
-          message: "message stored successfully",
-          data: newMessage,
-        });
+        try {
+          const { error } = await supabase.from("messages").insert({
+            email,
+            name,
+            message,
+          });
+          res.status(error ? 500 : 201).json({
+            success: !error,
+            message: error ? error.message : "message stored successfully",
+            data: error ? null : newMessage,
+          });
+          return;
+        } catch (error) {
+          res.status(500).json({
+            success: false,
+            message:
+              error instanceof Error ? error.message : "something went wrong",
+            data: null,
+          });
+        }
       }
       break;
-
     default: {
+      res.setHeader("Allow", "POST");
       res.status(405).json({
         success: false,
         message: "method not allowed",

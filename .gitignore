@@ -1,2 +1,3 @@
 node_modules
 08_api_routes_modern/prisma/dev.db
+09_blog_project/.env
