@@ -144,3 +144,8 @@ export interface PostData extends Post {
 }
 
 export type Message = Database["public"]["Tables"]["messages"]["Row"];
+export interface Notification {
+  title: string;
+  message: string;
+  status: "pending" | "error" | "success";
+}

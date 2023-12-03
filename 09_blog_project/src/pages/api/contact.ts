@@ -20,11 +20,9 @@ export default async function handler(
           res.status(422).json({
             success: false,
             message: "invalid input",
-            data: null,
           });
           return;
         }
-        const newMessage = { email, name, message };
         try {
           const { error } = await supabase.from("messages").insert({
             email,
@@ -34,7 +32,6 @@ export default async function handler(
           res.status(error ? 500 : 201).json({
             success: !error,
             message: error ? error.message : "message stored successfully",
-            data: error ? null : newMessage,
           });
           return;
         } catch (error) {
@@ -42,7 +39,6 @@ export default async function handler(
             success: false,
             message:
               error instanceof Error ? error.message : "something went wrong",
-            data: null,
           });
         }
       }

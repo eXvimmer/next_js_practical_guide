@@ -1,24 +1,95 @@
-import { useState, FormEventHandler } from "react";
+import { useState, FormEventHandler, useEffect } from "react";
 import styles from "./contact-form.module.css";
+import Notification from "../ui/notification";
+import type { Notification as NotificationType } from "@/types";
 
 function ContactForm() {
-  const [enteredEmail, setEnteredEmail] = useState("");
-  const [enteredName, setEnteredName] = useState("");
-  const [enteredMessage, setEnteredMessage] = useState("");
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [message, setMessage] = useState("");
+  const [requestStatus, setRequestStatus] = useState<
+    NotificationType["status"] | null
+  >(null);
+  const [error, setError] = useState("");
 
-  const sendMessageHandler: FormEventHandler<HTMLFormElement> = (event) => {
-    event.preventDefault();
+  useEffect(() => {
+    if (requestStatus === "success" || requestStatus === "error") {
+      const timer = setTimeout(() => {
+        setRequestStatus(null);
+      }, 3000);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [requestStatus]);
+
+  let notification: NotificationType | null = null;
+
+  switch (requestStatus) {
+    case "success":
+      {
+        notification = {
+          title: "Success",
+          message: "Messaged saved successfully",
+          status: "success",
+        };
+      }
+      break;
+    case "error":
+      {
+        notification = {
+          title: "Error",
+          message: error || "something went wrong",
+          status: "error",
+        };
+      }
+      break;
+    case "pending": {
+      notification = {
+        title: "Please wait",
+        message: "Saving the message to database",
+        status: "pending",
+      };
+    }
+    default:
+      notification = null;
+  }
+
+  const sendMessageHandler: FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    setRequestStatus("pending");
     fetch("/api/contact", {
       method: "POST",
       body: JSON.stringify({
-        email: enteredEmail,
-        name: enteredName,
-        message: enteredMessage,
+        email,
+        name,
+        message,
       }),
       headers: {
         "Content-Type": "application/json",
       },
-    });
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("something went wrong");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          setRequestStatus("success");
+          setEmail("");
+          setName("");
+          setMessage("");
+        } else {
+          setRequestStatus("error");
+        }
+      })
+      .catch((err) => {
+        setRequestStatus("error");
+        setError(err instanceof Error ? err.message : "something went wrong");
+      });
   };
 
   return (
@@ -32,8 +103,8 @@ function ContactForm() {
               type="email"
               id="email"
               required
-              value={enteredEmail}
-              onChange={(event) => setEnteredEmail(event.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className={styles.control}>
@@ -42,8 +113,8 @@ function ContactForm() {
               type="text"
               id="name"
               required
-              value={enteredName}
-              onChange={(event) => setEnteredName(event.target.value)}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
           </div>
         </div>
@@ -53,14 +124,15 @@ function ContactForm() {
             id="message"
             rows={5}
             required
-            value={enteredMessage}
-            onChange={(event) => setEnteredMessage(event.target.value)}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
           />
         </div>
         <div className={styles.actions}>
-          <button>Send Message</button>
+          <button disabled={requestStatus === "pending"}>Send Message</button>
         </div>
       </form>
+      {notification && <Notification {...notification} />}
     </section>
   );
 }
