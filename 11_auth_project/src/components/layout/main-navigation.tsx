@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 
 import styles from "./main-navigation.module.css";
 
@@ -24,7 +24,9 @@ function MainNavigation() {
                 <Link href="/profile">Profile</Link>
               </li>
               <li>
-                <button>Logout</button>
+                <button onClick={() => signOut({ redirect: false })}>
+                  Logout
+                </button>
               </li>
             </>
           )}
