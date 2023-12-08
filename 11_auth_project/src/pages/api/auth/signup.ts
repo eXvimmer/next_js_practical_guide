@@ -29,7 +29,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           .insert({ email, password: hashedPassword });
         res.status(error ? 400 : 201).json({
           success: !error,
-          message: error ? error.message : "user created",
+          message: error
+            ? error.message.toLowerCase().includes("duplicate")
+              ? "user already exist"
+              : error.message
+            : "user created",
         });
       } catch (err) {
         res.status(500).json({

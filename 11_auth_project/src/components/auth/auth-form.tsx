@@ -1,5 +1,6 @@
 import { FormEventHandler, useRef, useState } from "react";
 import styles from "./auth-form.module.css";
+import { signIn } from "next-auth/react";
 
 async function createUser(email: string, password: string) {
   const response = await fetch(`/api/auth/signup`, {
@@ -32,15 +33,24 @@ function AuthForm() {
     if (!email || !password) {
       return;
     }
-    if (isInLoginMode) {
-      // TODO: log the user in
-    } else {
-      try {
+    try {
+      if (isInLoginMode) {
+        const result = await signIn("credentials", {
+          redirect: false,
+          email,
+          password,
+        });
+        console.log(result);
+        if (!result?.error) {
+          // TODO: use cookie
+        }
+      } else {
+        // create mode
         const result = await createUser(email, password);
         console.log(result); // TODO: add a notification
-      } catch (error) {
-        console.error(error);
       }
+    } catch (error) {
+      console.error(error);
     }
   };
 
