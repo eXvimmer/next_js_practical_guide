@@ -16,7 +16,7 @@ export const getServerSideProps = (async (context) => {
       },
     };
   }
-  return { props: {} }; // we could pass session, but we don't need it.
+  return { props: { session } }; // we use session so it's used in the provider.
 }) satisfies GetServerSideProps;
 
 export default ProfilePage;
