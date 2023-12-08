@@ -42,6 +42,8 @@ function AuthForm() {
         });
         console.log(result);
         if (!result?.error) {
+          emailRef.current.value = "";
+          passwordRef.current.value = "";
           // TODO: use cookie
         }
       } else {
