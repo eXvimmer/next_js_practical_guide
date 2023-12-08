@@ -24,7 +24,7 @@ function MainNavigation() {
                 <Link href="/profile">Profile</Link>
               </li>
               <li>
-                <button onClick={() => signOut({ redirect: false })}>
+                <button onClick={() => signOut(/* { redirect: false } */)}>
                   Logout
                 </button>
               </li>
