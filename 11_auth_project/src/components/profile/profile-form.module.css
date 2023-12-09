@@ -43,3 +43,11 @@
   background-color: #540d83;
   border-color: #540d83;
 }
+
+/* .action button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+  background-color: #38015c;
+  color: #ccc;
+  border: 1px solid #ccc;
+} */

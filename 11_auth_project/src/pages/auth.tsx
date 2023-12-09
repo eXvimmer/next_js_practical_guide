@@ -1,18 +1,19 @@
 import { GetServerSideProps } from "next";
 import AuthForm from "../components/auth/auth-form";
-import { getSession } from "next-auth/react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]";
 
 function AuthPage() {
   return <AuthForm />;
 }
 
-export const getServerSideProps = (async ({ req }) => {
-  const session = await getSession({ req });
+export const getServerSideProps = (async (context) => {
+  const session = await getServerSession(context.req, context.res, authOptions);
   if (session) {
     return {
       redirect: {
-        permanent: true,
         destination: "/profile",
+        permanent: true,
       },
     };
   }

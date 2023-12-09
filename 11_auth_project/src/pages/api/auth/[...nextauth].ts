@@ -1,14 +1,17 @@
 import supabase from "@/db";
 import { verifyPassword } from "@/lib/auth";
+import { NextAuthOptions } from "next-auth";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-export default NextAuth({
+export const authOptions: NextAuthOptions = {
+  jwt: {
+    maxAge: 864000, // 10 days
+    secret: process.env.NEXTAUTH_SECRET,
+  },
   session: {
     strategy: "jwt",
-    maxAge: 864000, // 10 days
   },
-
   providers: [
     CredentialsProvider({
       credentials: { email: { type: "email" }, password: { type: "password" } },
@@ -36,4 +39,6 @@ export default NextAuth({
       },
     }),
   ],
-});
+};
+
+export default NextAuth(authOptions);
